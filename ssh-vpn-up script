@@ -1,5 +1,6 @@
 #Replace x.x.x.x with public IP of your distant end and y.y.y.y with your default gateway
 # when finished, make executable with 'sudo chmod +x'
+place this file in the /usr/local/bin
 
 #!/bin/bash
 
