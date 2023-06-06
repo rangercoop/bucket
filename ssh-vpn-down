@@ -1,0 +1,13 @@
+#Replace x.x.x.x with the public IP of your distant end and DNSSERVER with your original DNS Server
+#rememebr to sudo chmod +x
+
+#!/bin/bash
+
+echo "Your current IP: $(curl -s ipinfo.io)"
+sudo resolvectl dns ens33 DNSSERVER
+sudo systemctl restart systemd-resolved
+sudo ip route delete x.x.x.x/32
+sudo ip link set dev tun0 down
+sudo killall ssh
+sudo ip tuntap delete dev tun0 mode tun
+echo "Your current IP: $(curl -s ipinfo.io)"
