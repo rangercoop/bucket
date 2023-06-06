@@ -1,0 +1,15 @@
+#Replace x.x.x.x with public IP of your distant end and y.y.y.y with your default gateway
+# when finished, make executable with 'sudo chmod +x'
+
+#!/bin/bash
+
+echo "Your current IP: $(curl -s ipinfo.io)"
+sudo ip tuntap add dev tun0 mode tun user studentx group studentx
+sudo ip address add 192.168.x.2/32 peer 192.168.x.1 dev tun0
+sudo ip link set dev tun0 up
+sudo resolvectl dns ens33 1.1.1.1
+sudo systemctl restart systemd-resolved
+sudo ip route add x.x.x.x/32 via y.y.y.y dev ens33
+ssh -fqNTw 0:0 endpoint
+sudo ip route replace default via 192.168.x.1 dev tun0
+echo "Your new IP: $(curl -s ipinfo.io)"
