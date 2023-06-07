@@ -1,0 +1,7 @@
+# Baseline template for a client side wireguard p2p tunnel 
+
+[Interface]
+Address = 10.x.2.1/32
+ListenPort = xxxxx
+PrivateKey = xxxxxxxxxxxxxxxxxxxxxxxxxxxx=
+SaveConfig = true
