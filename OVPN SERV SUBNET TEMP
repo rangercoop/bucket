@@ -1,4 +1,4 @@
-#TEMPLATE FOR OPENVPN SERVER SUBNET TOPOLOGY 
+#OPENVPN SERVER SUBNET TOPOLOGY 
 #dev-type is a command only for linux and andriod hosts
 #if p2p topology, change from subnet to p2p
 
