@@ -1,0 +1,12 @@
+#baseline serverside wireguard config template
+#
+#
+[Interface]
+PrivateKey = xxxxxxxxxxxxxxxxxxxxxx=
+Address = 10.x.2.2/32
+
+[Peer]
+PublicKey = xxxxxxxxxxxxxxxxxxxxxxx=
+Endpoint = 1.2.3.4:xxxxx
+AllowedIPs = 10.x.2.1/32
+PersistentKeepalive = 30
