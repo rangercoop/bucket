@@ -1,0 +1,65 @@
+#vim cleanup.sh
+#
+#
+#
+#!/bin/bash
+
+#Check for root permissions
+if [ "$UID" -ne 0 ]
+then
+  echo "run it as root!"
+  exit
+fi
+#Kill all wireguard interfaces and delete their configs
+ints=$(wg | grep interface | cut -d' ' -f2)
+for wg in $ints
+do
+  echo "shutting down wg tun $ints"
+  wg-quick down $wg 2>/dev/null
+done
+wg=$(ls /etc/wireguard)
+for garbage in $wg
+do
+  echo "removing $wg"
+  rm /etc/wireguard/$garbage
+done
+#Kill all openvpn interfaces and delete their configs
+echo "killing all openvpn tunnels"
+killall openvpn 2>/dev/null
+confs=$(ls /etc/openvpn/*.conf)
+logs=$(ls /etc/openvpn/*.log)
+jails=$(ls /etc/openvpn/*-jail)
+echo "removing any openvpn configs:
+$confs"
+rm $confs 2>/dev/null
+echo "removing any openvpn logs:
+$logs"
+rm $logs 2>/dev/null
+echo "removing any openvpn jails:
+$jails"
+rm -rf $jails 2>/dev/null
+echo "removing iptables rules"
+rm /etc/iptables/rules.v* 2>/dev/null
+#Remove all SSH-VPN configs
+ssh_route=$(ls /etc/network-dispacher/routable.d/*tun*)
+ssh_tun=$(ls /etc/systemd/network/*tun*)
+ssh_vpn=$(ls /usr/local/bin/ssh-vpn*)
+echo "removing any ssh tunnels:
+$ssh_route
+$ssh_tun
+$ssh_vpn"
+rm $ssh_route 2>/dev/null
+rm /etc/systemd/network/*tun* 2>/dev/null
+rm /usr/local/bin/ssh-vpn* 2>/dev/null
+#Blow away iptables
+for chain in INPUT FORWARD OUTPUT
+do
+        iptables -P $chain ACCEPT
+done
+for table in filter nat mangle security raw
+do
+        iptables -t $table -F
+done
+rm /etc/iptables/rules.* 2>/dev/null
+#Prompt for reboot
+echo "Reboot now and check for any remaining configurations"
