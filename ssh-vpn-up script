@@ -1,6 +1,7 @@
 #Replace x.x.x.x with public IP of your distant end and y.y.y.y with your default gateway
 #when finished, make executable with 'sudo chmod +x'
 #place this file in the /usr/local/bin
+#xxx-xxx = filename of ssh host id file
 
 #!/bin/bash
 
@@ -12,5 +13,6 @@ sudo resolvectl dns ens33 1.1.1.1
 sudo systemctl restart systemd-resolved
 sudo ip route add x.x.x.x/32 via y.y.y.y dev ens33
 ssh -fqNTw 0:0 endpoint
+autossh -M 0 -fqNTw 0:0 XXX-XXX
 sudo ip route replace default via 192.168.x.1 dev tun0
 echo "Your new IP: $(curl -s ipinfo.io)"
