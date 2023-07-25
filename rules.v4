@@ -49,3 +49,6 @@ sudo iptables -A OUTPUT -j LOG --log-prefix "iptables output dropped: "
 sudo iptables -P INPUT DROP
 sudo iptables -P FORWARD DROP
 sudo iptables -P OUTPUT DROP
+sudo iptables -A INPUT -i ens18 -p udp -m udp --dport 123 -m comment --comment "Allow NTP requests in from Services network" -j ACCEPT
+sudo iptables -A OUTPUT -o eg0 -p udp -m udp --dport 123 -m comment --comment "Allow NTP updates out to egress" -j ACCEPT
+
