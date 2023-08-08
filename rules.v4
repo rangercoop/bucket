@@ -2,25 +2,8 @@
 #
 #
 
-sudo iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-sudo iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
-sudo iptables -A INPUT -i lo -j ACCEPT
-sudo iptables -A INPUT -p icmp -j ACCEPT
-sudo iptables -A INPUT -p tcp -m tcp --dport 20022 -m conntrack --ctstate NEW -m comment --comment "Accept SSH" -j ACCEPT
-sudo iptables -A INPUT -p udp -m udp --sport 68 --dport 67 -m comment --comment "Accept DHCP if needed" -j ACCEPT
-sudo iptables -A INPUT -j LOG --log-prefix "iptables input dropped: "
-sudo iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-sudo iptables -A FORWARD -m conntrack --ctstate INVALID -j DROP
-sudo iptables -A FORWARD -p icmp -j ACCEPT
-sudo iptables -A FORWARD -j LOG --log-prefix "iptables forward dropped: "
-sudo iptables -A OUTPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-sudo iptables -A OUTPUT -m conntrack --ctstate INVALID -j DROP
-sudo iptables -A OUTPUT -o lo -j ACCEPT
-sudo iptables -A OUTPUT -p icmp -j ACCEPT
-sudo iptables -A OUTPUT -p udp -m udp --sport 67 --dport 68 -m comment --comment "Accept DHCP if needed" -j ACCEPT
-sudo iptables -A OUTPUT -o eth0 -p tcp -m multiport --dports 53,80,443 -m conntrack --ctstate NEW -m comment --comment "Accept DNS and updates" -j ACCEPT
-sudo iptables -A OUTPUT -p udp -m multiport --dports 53,123 -m comment --comment "Accept DNS and NTP" -j ACCEPT
-sudo iptables -A OUTPUT -j LOG --log-prefix "iptables output dropped: "
+
+
 
 ######DNS RULES######
 sudo iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
